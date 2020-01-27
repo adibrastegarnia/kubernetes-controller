@@ -151,11 +151,11 @@ func (c *Controller) getPartitionGroups(ctx context.Context, request *api.GetPar
 
 		pbpartitions := make([]*api.Partition, 0, len(partitions.Items))
 		for _, partition := range partitions.Items {
-			pbpartition, err := k8sutil.NewPartitionProto(&partition)
+			pbpartition, err := k8sutil.NewPartitionProtos(&partition)
 			if err != nil {
 				return nil, err
 			}
-			pbpartitions = append(pbpartitions, pbpartition)
+			pbpartitions = append(pbpartitions, pbpartition...)
 		}
 		pbgroup.Partitions = pbpartitions
 
@@ -198,11 +198,11 @@ func (c *Controller) getPartitionGroup(ctx context.Context, request *api.GetPart
 
 	partitionProtos := make([]*api.Partition, 0, len(partitions.Items))
 	for _, partition := range partitions.Items {
-		partitionProto, err := k8sutil.NewPartitionProto(&partition)
+		partitionProto, err := k8sutil.NewPartitionProtos(&partition)
 		if err != nil {
 			return nil, err
 		}
-		partitionProtos = append(partitionProtos, partitionProto)
+		partitionProtos = append(partitionProtos, partitionProto...)
 	}
 	proto.Partitions = partitionProtos
 

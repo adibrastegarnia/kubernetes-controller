@@ -26,4 +26,7 @@ func SetPartitionSetDefaults(group *PartitionSet) {
 	if group.Spec.Partitions == 0 {
 		group.Spec.Partitions = 1
 	}
+	if group.Spec.ClustersPerPartition == 0 {
+		group.Spec.ClustersPerPartition = 1
+	}
 }

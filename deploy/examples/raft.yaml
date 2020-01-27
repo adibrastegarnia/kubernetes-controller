@@ -4,6 +4,7 @@ metadata:
   name: raft
 spec:
   partitions: 3
+  clustersPerPartition: 3
   template:
     spec:
       size: 3

@@ -23,6 +23,9 @@ type PartitionSetSpec struct {
 	// Partitions is the number of partitions in the set
 	Partitions int `json:"partitions,omitempty"`
 
+	// ClustersPerPartition is the number of clusters for each partition
+	ClustersPerPartition int `json:"clustersPerPartition,omitempty"`
+
 	// Template is the PartitionTemplateSpec to use to configure the partitions
 	Template PartitionTemplateSpec `json:"template,omitempty"`
 }

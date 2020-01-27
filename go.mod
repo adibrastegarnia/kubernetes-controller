@@ -1,7 +1,7 @@
 module github.com/atomix/kubernetes-controller
 
 require (
-	github.com/atomix/api v0.0.0-20200123231207-4e5fb1cbaf40
+	github.com/atomix/api v0.0.0-20200127101916-af75079e8faa
 	github.com/evanphx/json-patch v4.0.0+incompatible // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-logr/logr v0.1.0 // indirect

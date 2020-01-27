@@ -66,9 +66,15 @@ func NewPartition(set *v1alpha1.PartitionSet, partition int) *v1alpha1.Partition
 		meta.Labels[key] = value
 	}
 	meta.Annotations = newPartitionAnnotations(set, partition)
+	spec := set.Spec.Template.Spec
+	clusters := make([]int32, 0, set.Spec.ClustersPerPartition)
+	for i := (set.Spec.ClustersPerPartition * (partition - 1)) + 1; i <= set.Spec.ClustersPerPartition*partition; i++ {
+		clusters = append(clusters, int32(i))
+	}
+	spec.Clusters = clusters
 	return &v1alpha1.Partition{
 		ObjectMeta: meta,
-		Spec:       set.Spec.Template.Spec,
+		Spec:       spec,
 	}
 }
 
@@ -222,6 +228,13 @@ func newNodeConfigString(partition *v1alpha1.Partition) (string, error) {
 		return "", err
 	}
 
+	partitions := make([]*api.PartitionId, len(partition.Spec.Clusters))
+	for i := 0; i < len(partition.Spec.Clusters); i++ {
+		partitions[i] = &api.PartitionId{
+			Partition: int32(partition.Spec.Clusters[i]),
+		}
+	}
+
 	partitionGroup, err := getPartitionGroupFromAnnotation(partition)
 	if err != nil {
 		return "", err
@@ -253,7 +266,8 @@ func newNodeConfigString(partition *v1alpha1.Partition) (string, error) {
 			ProtocolPort: protocolPort,
 			APIPort:      apiPort,
 		},
-		Members: nodes,
+		Members:    nodes,
+		Partitions: partitions,
 	}
 
 	marshaller := jsonpb.Marshaler{}

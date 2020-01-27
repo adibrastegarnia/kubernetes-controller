@@ -96,21 +96,21 @@ func NewPartitionSetEndpointPorts() []corev1.EndpointPort {
 	}
 }
 
-// NewPartitionProto returns the partition proto message for the given Partition
-func NewPartitionProto(p *v1alpha1.Partition) (*api.Partition, error) {
-	id, err := getPartitionIDFromAnnotation(p)
-	if err != nil {
-		return nil, err
-	}
-	return &api.Partition{
-		PartitionID: int32(id),
-		Endpoints: []*api.PartitionEndpoint{
-			{
-				Host: GetPartitionServiceName(p),
-				Port: 5678,
+// NewPartitionProtos returns the partition proto messages for the given Partition
+func NewPartitionProtos(p *v1alpha1.Partition) ([]*api.Partition, error) {
+	partitions := make([]*api.Partition, len(p.Spec.Clusters))
+	for i := 0; i < len(p.Spec.Clusters); i++ {
+		partitions[i] = &api.Partition{
+			PartitionID: p.Spec.Clusters[i],
+			Endpoints: []*api.PartitionEndpoint{
+				{
+					Host: GetPartitionServiceName(p),
+					Port: 5678,
+				},
 			},
-		},
-	}, nil
+		}
+	}
+	return partitions, nil
 }
 
 // NewPartitionGroupProtoFromSet returns the PartitionGroup proto message for the given PartitionSet

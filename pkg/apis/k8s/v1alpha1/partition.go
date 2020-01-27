@@ -24,6 +24,9 @@ type PartitionSpec struct {
 	// Size is the number of nodes in the partition
 	Size int32 `json:"size,omitempty"`
 
+	// Clusters is the number of clusters in the partition
+	Clusters []int32 `json:"clusters,omitempty"`
+
 	// Env is a set of environment variables to pass to partition nodes
 	Env []v1.EnvVar `json:"env,omitempty"`
 
